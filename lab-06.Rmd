@@ -73,14 +73,14 @@ Whickham %>%
 ```
 Above is the visualized variable of outcome, as the individual is either alive or dead. The majority of respondents are alive. 
 
-```{r}
+```{r bar_plot}
 Whickham %>%
   ggplot(aes(x = smoker)) +
   geom_bar()
 ```
 Above is the visualized variabl of smoker as either someone who smokes (yes) or someone who does not (no). The majority of participants do smoke, but a similar but slightly less amount of participants do not smoke. 
 
-```{r}
+```{r Whickham_plot}
 Whickham %>%
   ggplot(aes(x = age)) +
   geom_histogram()
@@ -93,18 +93,18 @@ I would expect the relationship between smoking status and health to be negative
 
 ### Exercise 5
 
-```{r}
+```{r count}
 Whickham %>%
   count(smoker, outcome)
 ```
 
-```{r}
+```{r contigency_table}
 contingency_table_2 <- table(Whickham$smoke, Whickham$outcome)
 
 ftable(contingency_table_2)
 ```
 
-```{r}
+```{r create_plot}
 Whickham %>%
   ggplot(aes(x = outcome, fill = smoker)) + 
   geom_bar() +
@@ -116,7 +116,7 @@ The bar plot above plots the health outcome of participants by smoking status. A
 
 Now I will create a new age variable that puts the participants into three age categories. The three categories are "18-44", "45-64", and "65+".
 
-```{r}
+```{r create_new_variable}
 Whickham <- Whickham %>%
   mutate(age_cat = case_when(age <= 44 ~ "18-44",
   age > 44 & age <= 64 ~ "45-64", age > 64 ~ "65+"))
@@ -124,16 +124,19 @@ Whickham <- Whickham %>%
 
 ### Exercise 7
 
-```{r}
+```{r contingency_table_3}
 contingency_table_3 <- table(Whickham$age_cat, Whickham$smoke, Whickham$outcome)
 
 ftable(contingency_table_3)
 ```
-```{r}
+```{r final_plot}
 ggplot(Whickham, aes(x = outcome, fill = smoker)) +
   geom_bar(position = "fill") +
   facet_wrap(~age_cat) +
   labs(title = "Health Outcome by Smoking Status",
        subtitle = "Faceted by Age Category")
 ```
-Now that we have faceted the visualization by age category, we are able to see that there is a general 
+
+Now that we have faceted the visualization by age category and created a contigency table with all three variables, we are able to see that there is simply an increase in dead participants within the age group of 65+ and that being a smoker does not simply lead to death. This is visualized above as the percentage of individuals who have passed away is not correlated with whether or not the individual smoked. 
+
+This new visualization shows three bar plots similar to exercise 5. Now we are able to visualized the faceted variables in a clear and accessible way. We are also able to see that a greater percentage of individuals in the oldest age group actually tend to smoke less than individuals in the younger age group. When we look at the three-way contingency table, a pattern becomes evident. Much more individuals in the "18-44" and the "45-64" age group are included in this sample which skews our idea of a relationship between these variables. Simply put, more individuals over 65 begin passing away at a faster rate, and this does not seem to be predicted by whether the person smokes or not as seen in all three age categories. 
